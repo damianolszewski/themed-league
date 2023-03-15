@@ -39,4 +39,4 @@ async def team(ctx, origin: str):
         response += f"{role}: {champion}\n"
     await ctx.send(response)
 
-bot.run(os.environ['DISCORD_TOKEN'])
+bot.run(os.getenv('DISCORD_TOKEN'))

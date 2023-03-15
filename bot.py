@@ -4,8 +4,9 @@ import requests
 
 from discord.ext import commands
 
-
-bot = commands.Bot(command_prefix='!')
+intents = discord.Intents.default()
+intents.members = True
+bot = commands.Bot(command_prefix='!', intents=intents)
 
 def get_champions_by_origin(origin):
     url = f'https://api.champions.gg/v2/champions?elo=GOLD&champData=roles&limit=200'

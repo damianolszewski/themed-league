@@ -1,44 +1,29 @@
 import os
 import random
-import csv
 import discord
-
 from discord.ext import commands
+import requests
 
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='!', intents=intents)
 
 CHANNEL_ID = 701417126392627341
-
-champion_roles = {}
-
-# Read champion data from stats.csv file to determine their roles
-with open('stats.csv', newline='') as csvfile:
-  reader = csv.reader(csvfile, delimiter=',', quotechar='"')
-  next(reader)  # skip header row
-  for row in reader:
-    champion_name = row[0]
-    champion_roles[champion_name] = []
-    for i in range(1, len(row)):
-      if row[i] != '':
-        champion_roles[champion_name].append(row[i])
+RIOT_API_KEY = os.getenv("RIOT_API_KEY")
 
 
-def get_champions_by_role(role):
-  champions = []
-  for champion_name in champion_roles:
-    if role in champion_roles[champion_name]:
-      champions.append(champion_name)
+def get_champions_by_origin(origin: str):
+  champion_data_url = "https://ddragon.leagueoflegends.com/cdn/11.18.1/data/en_US/champion.json"
+  response = requests.get(champion_data_url).json()
+  champion_data = response['data']
+
+  champions = [{
+    "name": champ_data["name"],
+    "title": champ_data["title"],
+    "id": champ_id,
+  } for champ_id, champ_data in champion_data.items()
+               if champ_data["blurb"].lower().count(origin.lower()) > 0]
+
   return champions
-
-
-def get_champion_role(champions, role):
-  print(f"get {role}")
-  role_champions = []
-  for champ in champions:
-    role_champions.append(champ)
-  return random.choice(
-    role_champions) if role_champions else "No available champion"
 
 
 @bot.event
@@ -51,23 +36,20 @@ async def on_ready():
 async def team(ctx):
   origin = ctx.message.content.split(" ")[1]
   print(f"Received team command with origin={origin}")
-  roles = ["Top", "Jungle", "Middle", "ADC", "Support"]
-  champions_by_role = {}
-  for role in roles:
-    champions = get_champions_by_role(role)
-    print(f"Found {len(champions)} champions for role={role}")
-    champions_by_role[role] = champions
-  team = {
-    "Top": get_champion_role(champions_by_role["Top"], "Top"),
-    "Jungle": get_champion_role(champions_by_role["Jungle"], "Jungle"),
-    "Middle": get_champion_role(champions_by_role["Middle"], "Middle"),
-    "ADC": get_champion_role(champions_by_role["ADC"], "ADC"),
-    "Support": get_champion_role(champions_by_role["Support"], "Support"),
-  }
-  response = f"Here is your {origin} team:\n\n"
-  for role, champion in team.items():
-    response += f"{role}: {champion}\n"
-  print(f"Sending response: {response}")
+
+  champions = get_champions_by_origin(origin)
+  print(champions)
+
+  if len(champions) == 0:
+    response = f"No champions found with the origin '{origin}'. Please check the origin and try again."
+  elif len(champions) < 5:
+    response = f"Not enough champions found for {origin}."
+  else:
+    selected_champions = random.sample(champions, 5)
+    response = f"Here is your {origin} team:\n"
+    for champ_data in selected_champions:
+      response += f"{champ_data['name']} - {champ_data['title']}\n"
+
   await ctx.send(response)
 
 

@@ -35,29 +35,33 @@ async def on_ready():
 
 
 async def create_team_image(champions):
-  width, height = 120 * len(champions), 120
-  team_image = Image.new("RGBA", (width, height), (255, 255, 255, 0))
+    images = []
+    for champ in champions:
+        icon_url = f"https://ddragon.leagueoflegends.com/cdn/11.18.1/img/champion/{champ}.png"
+        response = requests.get(icon_url)
+        image = Image.open(BytesIO(response.content)).convert("RGBA")
+        images.append(image)
 
-  for i, champ in enumerate(champions):
-    icon_url = f"https://ddragon.leagueoflegends.com/cdn/11.18.1/img/champion/{champ}.png"
-    response = requests.get(icon_url)
-    champ_image = Image.open(io.BytesIO(response.content))
-    champ_image = champ_image.resize((100, 100), Image.ANTIALIAS)
+    total_width = sum(image.width for image in images)
+    max_height = max(image.height for image in images)
 
-    x, y = i * 120, 0
-    team_image.paste(champ_image, (x, y))
+    team_image = Image.new("RGBA", (total_width, max_height + 40), (0, 0, 0, 0))
+    font = ImageFont.truetype("couture-bld.otf", 24)  # Change the font and size
 
-    draw = ImageDraw.Draw(team_image)
-    # Change the font file path to an appropriate one on your system
-    font = ImageFont.load_default()
-    draw.text((x, y + 100), champ, (0, 0, 0), font=font)
+    x_offset = 0
+    for i, image in enumerate(images):
+        team_image.paste(image, (x_offset, 40))
+        draw = ImageDraw.Draw(team_image)
+        text = champions[i]
+        text_width, text_height = draw.textsize(text, font=font)
+        text_x = x_offset + (image.width - text_width) // 2
+        draw.text((text_x, 0), text, font=font, fill=(255, 255, 255))  # Change the text color to white
+        x_offset += image.width
 
-  img_byte_arr = io.BytesIO()
-  team_image.save(img_byte_arr, format='PNG')
-  img_byte_arr.seek(0)
-
-  return img_byte_arr
-
+    buffer = BytesIO()
+    team_image.save(buffer, "PNG")
+    buffer.seek(0)
+    return buffer
 
 @bot.command(name="team")
 async def team(ctx):

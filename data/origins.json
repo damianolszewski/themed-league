@@ -1,0 +1,17 @@
+{
+  "BandleCity": ["Amumu", "Corki", "Gnar", "Lulu", "Poppy", "Rumble", "Teemo", "Tristana", "Veigar", "Yuumi"],
+  "Bilgewater": ["Fiddlesticks", "Fizz", "Gangplank", "Graves", "Illaoi", "Miss Fortune", "Nautilus", "Pyke", "Twisted Fate"],
+  "Demacia": ["Fiora", "Galio", "Garen", "Jarvan IV", "Kayle", "Lucian", "Lux", "Poppy", "Quinn", "Shyvana", "Sona", "Vayne", "Xin Zhao", "Sylas"],
+  "Freljord": ["Anivia", "Ashe", "Braum", "Gragas", "Ivern", "Lissandra", "Nunu & Willump", "Olaf", "Ornn", "Sejuani", "Tryndamere", "Udyr", "Volibear", "Trundle"],
+  "Icathia": ["Jax", "Kassadin", "Kha'Zix", "Malzahar", "Rek'Sai", "Zilean"],
+  "Ionia": ["Ahri", "Akali", "Aurelion Sol", "Gwen", "Irelia", "Janna", "Karma", "Katarina", "Kayn", "Kennen", "Lee Sin", "Master Yi", "Riven", "Shen", "Soraka", "Syndra", "Varus", "Yasuo", "Yone", "Zed", "Xayah", "Sett", "Rakan", "Lillia"],
+  "Targon": ["Aphelios", "Bard", "Diana", "Leona", "Pantheon", "Soraka", "Taric", "Zoe"],
+  "Noxus": ["Aatrox", "Annie", "Cassiopeia", "Darius", "Draven", "Katarina", "LeBlanc", "Morgana", "Riven", "Samira", "Sion", "Swain", "Talon", "Urgot", "Vladimir", "Kled", "Alistar"],
+  "Piltover": ["Blitzcrank", "Caitlyn", "Camille", "Corki", "Ekko", "Ezreal", "Heimerdinger", "Jayce", "Jinx", "Orianna", "Seraphine", "Vi", "Ziggs"],
+  "ShadowIsles": ["Elise", "Evelynn", "Hecarim", "Kalista", "Karthus", "Maokai", "Mordekaiser", "Thresh", "Viego", "Yorick", "Zed"],
+  "Shurima": ["Amumu", "Azir", "Ezreal", "Nasus", "Rammus", "Renekton", "Ryze", "Sivir", "Skarner", "Taliyah", "Xerath", "Zilean"],
+  "Void": ["Cho'Gath", "Kai'Sa", "Kog'Maw", "Rek'Sai", "Vel'Koz"],
+  "Zaun": ["Ekko", "Janna", "Jinx", "Dr. Mundo", "Singed", "Sion", "Twitch", "Urgot", "Viktor", "Warwick", "Zac", "Zeri", "Ziggs"],
+  "Ixtal": ["Malphite", "Neeko", "Nidalee", "Qiyana", "Rengar", "Zyra"],
+  "Runeterra": ["Brand", "Fiddlesticks", "Kindred", "Nidalee", "Nocturne", "Rengar", "Ryze", "Shaco", "Sylas" ,"Vayne", "Zilean"]
+}

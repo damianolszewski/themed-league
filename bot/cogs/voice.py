@@ -74,13 +74,20 @@ class Voice(commands.Cog):
             member_name = member.display_name
             x = (cell_width + padding) * i + padding
             y = padding
-            name_text_width, name_text_height = draw.textsize(member_name, font=font)
             
+            # Check if name is too long for cell width and crop name
+            name_text_width, name_text_height = draw.textsize(member_name, font=font)
             if name_text_width > cell_width:
-                # If the name is too long, crop it and add an ellipsis
                 name_text = member_name[:11] + "..."
             else:
                 name_text = member_name
+            
+            # Scale down the text size if name is short
+            if name_text_width < cell_width:
+                font_size = 18
+                while draw.textsize(name_text, font=ImageFont.truetype("data/font.ttf", font_size))[0] < cell_width and font_size <= 36:
+                    font_size += 1
+                font = ImageFont.truetype("data/font.ttf", font_size)
             
             draw.text((x, y), name_text, fill=text_color, font=font)
 
@@ -104,11 +111,7 @@ class Voice(commands.Cog):
                 y = cell_height + padding * 4
                 final_image.paste(champion_image, (x, y))
 
-                champion_name_text_width, champion_name_text_height = draw.textsize(champion_name, font=font)
-
-                x = (cell_width + padding) * i + padding
-                y = cell_height + champion_image.height + padding * 5
-                draw.text((x, y), champion_name, fill=text_color, font=font)
+                draw.textsize(champion_name, font=font)
 
         return final_image
 

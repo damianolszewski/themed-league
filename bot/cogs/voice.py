@@ -53,7 +53,7 @@ class Voice(commands.Cog):
             raise e
 
 
-    def create_voice_image(members, champions, champion_data, champion_images):
+    def create_voice_image(self, members, champions, champion_data, champion_images):
         # Calculate the size of each cell
         cell_width = 128
         cell_height = 150

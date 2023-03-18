@@ -44,9 +44,9 @@ class Voice(commands.Cog):
                 champion_name = random.choice(list(self.champion_data.keys()))
                 champions[member] = champion_name
 
-            final_image = self.create_voice_image(members, champions, self.champion_data, self.champion_images)
+            final_image = create_voice_image(members, champions, self.champion_data, self.champion_images)
 
-            await self.send_voice_image(interaction, final_image)
+            await send_voice_image(interaction, final_image)
 
         except Exception as e:
             print(f"An error occurred while processing the command: {str(e)}")

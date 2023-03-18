@@ -53,7 +53,7 @@ class Voice(commands.Cog):
             raise e
 
 
-    def create_voice_image(self, members, champions, champion_data, champion_images):
+    def create_voice_image(members, champions, champion_data, champion_images):
         # Calculate the size of each cell
         cell_width = 128
         cell_height = 150
@@ -74,7 +74,15 @@ class Voice(commands.Cog):
             member_name = member.display_name
             x = (cell_width + padding) * i + padding
             y = padding
-            draw.text((x, y), member_name, fill=text_color, font=font)
+            name_text_width, name_text_height = draw.textsize(member_name, font=font)
+            
+            if name_text_width > cell_width:
+                # If the name is too long, crop it and add an ellipsis
+                name_text = member_name[:11] + "..."
+            else:
+                name_text = member_name
+            
+            draw.text((x, y), name_text, fill=text_color, font=font)
 
             avatar_url = member.avatar.url
             response = requests.get(avatar_url)
@@ -90,13 +98,17 @@ class Voice(commands.Cog):
             champion_key = get_champion_key(champion_data, champion_name)
             champion_image_url = champion_images.get(champion_key)
             if champion_image_url:
-              champion_image = create_champion_image_with_name(champion_image_url, champion_name)
+                champion_image = create_champion_image_with_name(champion_image_url, champion_name)
 
-              x = (cell_width + padding) * i + padding
-              y = cell_height + padding * 4
-              final_image.paste(champion_image, (x, y))
+                x = (cell_width + padding) * i + padding
+                y = cell_height + padding * 4
+                final_image.paste(champion_image, (x, y))
 
-              draw.textsize(champion_name, font=font)
+                champion_name_text_width, champion_name_text_height = draw.textsize(champion_name, font=font)
+
+                x = (cell_width + padding) * i + padding
+                y = cell_height + champion_image.height + padding * 5
+                draw.text((x, y), champion_name, fill=text_color, font=font)
 
         return final_image
 

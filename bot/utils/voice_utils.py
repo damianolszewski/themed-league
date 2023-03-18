@@ -1,6 +1,6 @@
 import discord
 
-async def get_voice_channel_members(interaction: discord.Interaction) -> list[discord.Member]:
+def get_voice_channel_members(interaction: discord.Interaction) -> list[discord.Member]:
     """Returns a list of members in the voice channel the user is currently in."""
     if not interaction.user.voice:
         return []

@@ -81,14 +81,6 @@ class Voice(commands.Cog):
                 name_text = member_name[:11] + "..."
             else:
                 name_text = member_name
-            
-            # Scale down the text size if name is short
-            if name_text_width < cell_width:
-                font_size = 18
-                while draw.textsize(name_text, font=ImageFont.truetype("data/font.ttf", font_size))[0] < cell_width and font_size <= 36:
-                    font_size += 1
-                font = ImageFont.truetype("data/font.ttf", font_size)
-            
             draw.text((x, y), name_text, fill=text_color, font=font)
 
             avatar_url = member.avatar.url

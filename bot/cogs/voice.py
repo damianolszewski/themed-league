@@ -96,11 +96,7 @@ class Voice(commands.Cog):
               y = cell_height + padding * 4
               final_image.paste(champion_image, (x, y))
 
-              champion_name_text_width, champion_name_text_height = draw.textsize(champion_name, font=font)
-
-              x = (cell_width + padding) * i + padding
-              y = cell_height + champion_image.height + padding * 5
-              draw.text((x, y), champion_name, fill=text_color, font=font)
+              draw.text(champion_name, font=font)
 
         return final_image
 

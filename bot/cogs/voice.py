@@ -44,16 +44,16 @@ class Voice(commands.Cog):
                 champion_name = random.choice(list(self.champion_data.keys()))
                 champions[member] = champion_name
 
-            final_image = create_voice_image(members, champions, self.champion_data, self.champion_images)
+            final_image = self.create_voice_image(members, champions, self.champion_data, self.champion_images)
 
-            await send_voice_image(interaction, final_image)
+            await self.send_voice_image(interaction, final_image)
 
         except Exception as e:
             print(f"An error occurred while processing the command: {str(e)}")
             raise e
 
 
-    def create_voice_image(members, champions, champion_data, champion_images):
+    def create_voice_image(self, members, champions, champion_data, champion_images):
         # Calculate the size of each cell
         cell_width = 128
         cell_height = 150
@@ -105,7 +105,7 @@ class Voice(commands.Cog):
         return final_image
 
 
-    async def send_voice_image(interaction, final_image):
+    async def send_voice_image(self, interaction, final_image):
       # Save the final image to a buffer and send it as a message
       image_buffer = BytesIO()
       final_image.save(image_buffer, format='PNG')

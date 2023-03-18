@@ -20,7 +20,7 @@ class Voice(commands.Cog):
 
     @app_commands.command(
         name="voice",
-        description="Assigns a random league champion to each member in the voice channel."
+        description="Przypisuje losową postać do każdego użytkownika discord'a z aktualnego kanału głosowego."
     )
     async def voice(self, interaction: discord.Interaction):
         try:
@@ -28,14 +28,14 @@ class Voice(commands.Cog):
 
             if not interaction.user.voice:
                 await interaction.followup.send(
-                    "You must be in a voice channel to use this command!"
+                    "Musisz być na kanale głosowym!"
                 )
                 return
 
             members = get_voice_channel_members(interaction)
 
             if not members:
-                await interaction.followup.send("No members found in the voice channel!")
+                await interaction.followup.send("Nie ma nikogo na kanale głosowym!")
                 return
 
             champions = {}
@@ -96,7 +96,7 @@ class Voice(commands.Cog):
               y = cell_height + padding * 4
               final_image.paste(champion_image, (x, y))
 
-              draw.text(champion_name, font=font)
+              draw.textsize(champion_name, font=font)
 
         return final_image
 

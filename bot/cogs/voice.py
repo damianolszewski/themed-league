@@ -41,7 +41,7 @@ class Voice(commands.Cog):
 
       # Calculate the size of the final image
       final_width = cell_width * (n_members + 1) + padding * (n_members + 2)
-      final_height = cell_height * 2 + padding * 5
+      final_height = cell_height * 2 + padding * 6
       final_image = Image.new("RGBA", (final_width, final_height),
                               (0, 0, 0, 0))
 

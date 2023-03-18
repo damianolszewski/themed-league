@@ -2,7 +2,10 @@ import openai
 import discord
 from discord.ext import commands
 from discord import app_commands
+from config import Config
 import random
+
+openai.api_key = Config.OPENAI_KEY
 
 class Mean(commands.Cog):
     def __init__(self, bot):

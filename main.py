@@ -5,7 +5,7 @@ from discord import app_commands
 from discord import Interaction
 from discord.ext.commands import Greedy, Context
 from typing import Literal, Optional
-from bot.cogs import origins, teams, champions, voice
+from bot.cogs import origins, teams, champions, voice, mean
 from config import Config
 import aiohttp
 import json
@@ -65,6 +65,7 @@ async def on_ready():
   await bot.add_cog(teams.Teams(bot))
   await bot.add_cog(champions.Champions(bot))
   await bot.add_cog(voice.Voice(bot))
+  await bot.add_cog(mean.Mean(bot))
   print(f"Registered Cogs")
   print("------")
 

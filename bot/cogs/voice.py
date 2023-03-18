@@ -78,7 +78,7 @@ class Voice(commands.Cog):
             # Check if name is too long for cell width and crop name
             name_text_width, name_text_height = draw.textsize(member_name, font=font)
             if name_text_width > cell_width:
-                name_text = member_name[:11] + "..."
+                name_text = member_name[:10] + "..."
             else:
                 name_text = member_name
             draw.text((x, y), name_text, fill=text_color, font=font)

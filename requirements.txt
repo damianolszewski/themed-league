@@ -4,3 +4,4 @@ openai
 google-cloud-texttospeech
 python-dotenv
 gtts
+opuslib

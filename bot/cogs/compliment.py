@@ -1,7 +1,7 @@
 import openai
 import discord
 from discord.ext import commands
-from discord.app import commands as app_commands
+from discord import app_commands
 from config import Config
 import random
 from gtts import gTTS

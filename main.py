@@ -11,10 +11,11 @@ import aiohttp
 import json
 from PIL import Image
 from io import BytesIO
+from dotenv import load_dotenv
 
+load_dotenv()
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='!', intents=intents)
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "google.json"
 
 # Get Guild ID from right clicking on server icon
 # Must have devloper mode on discord on setting>Advance>Developer Mode

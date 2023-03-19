@@ -4,8 +4,7 @@ from discord.ext import commands
 from discord import app_commands
 from config import Config
 import random
-from gtts import gTTS
-import io
+import pyttsx3
 import tempfile
 import os
 
@@ -17,7 +16,7 @@ class Compliment(commands.Cog):
 
     @app_commands.command(
         name="compliment",
-        description="Sends a positive message to a random member of your voice channel."
+        description="Wyślij komplement losowej osobie na twoim kanale głosowym."
     )
     async def compliment(self, interaction: discord.Interaction):
         try:
@@ -25,7 +24,7 @@ class Compliment(commands.Cog):
 
             if not interaction.user.voice:
                 await interaction.followup.send(
-                    "You must be in a voice channel to use this command!"
+                    "Musisz być na kanale głosowym żeby użyć tej komendy!"
                 )
                 return
 
@@ -33,7 +32,7 @@ class Compliment(commands.Cog):
             members = channel.members
 
             if not members:
-                await interaction.followup.send("No members found in the voice channel!")
+                await interaction.followup.send("Nie ma nikogo na twoim kanale głosowym!")
                 return
 
             selected_member = random.choice(members)
@@ -51,24 +50,25 @@ class Compliment(commands.Cog):
 
             compliment = response.choices[0].text.strip()
 
-            # Use the gTTS library to generate an audio clip of the message being spoken
-            tts = gTTS(text=compliment, lang="pl")
-            with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as audio_file:
-                tts.save(audio_file.name)
-                audio_file.flush()
+            # Use the pyttsx3 library to generate an audio clip of the message being spoken
+            engine = pyttsx3.init()
+            engine.setProperty('rate', 150)  # Speed of speech
+            engine.setProperty('volume', 0.9)  # Volume level (0.0 to 1.0)
+            engine.save_to_file(compliment, 'output.mp3')
+            engine.runAndWait()
 
-                # Send the audio clip to the selected member in the voice channel
-                voice_client = await channel.connect()
-                audio_source = discord.FFmpegPCMAudio(audio_file.name)
-                voice_client.play(audio_source)
-                while voice_client.is_playing():
-                    pass
-                await voice_client.disconnect()
+            # Send the audio clip to the selected member in the voice channel
+            voice_client = await channel.connect()
+            audio_source = discord.FFmpegPCMAudio('output.mp3')
+            voice_client.play(audio_source)
+            while voice_client.is_playing():
+                pass
+            await voice_client.disconnect()
 
             # Remove the temporary audio file
-            os.unlink(audio_file.name)
+            os.unlink('output.mp3')
 
-            await interaction.followup.send(f"Sent a positive message to {selected_member.display_name}!")
+            await interaction.followup.send(f"Komplement wysłany do {selected_member.display_name}!")
 
         except Exception as e:
             print(f"An error occurred while processing the command: {str(e)}")

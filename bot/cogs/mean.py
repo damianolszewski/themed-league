@@ -4,6 +4,8 @@ from discord.ext import commands
 from discord import app_commands
 from config import Config
 import random
+from google.cloud import texttospeech
+from io import BytesIO
 
 openai.api_key = Config.OPENAI_TOKEN
 
@@ -49,8 +51,6 @@ class Mean(commands.Cog):
 
             # Use a text-to-speech service to generate an audio clip of the message being spoken
             # This is an example using Google's Text-to-Speech API, but there are many others available
-            from google.cloud import texttospeech
-            import io
 
             client = texttospeech.TextToSpeechClient()
             synthesis_input = texttospeech.SynthesisInput(text=compliment)
@@ -70,7 +70,7 @@ class Mean(commands.Cog):
 
             # Send the audio clip to the selected member in the voice channel
             voice_client = await channel.connect()
-            audio_source = discord.FFmpegPCMAudio(io.BytesIO(audio_bytes))
+            audio_source = discord.FFmpegPCMAudio(BytesIO(audio_bytes))
             voice_client.play(audio_source)
             await interaction.followup.send(f"Sent a positive message to {selected_member.display_name}!")
             

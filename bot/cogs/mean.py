@@ -49,9 +49,9 @@ class Mean(commands.Cog):
 
             compliment = response.choices[0].text.strip()
 
-            # Use gTTS library to generate an audio clip of the message being spoken
-            # This is an example using Google's Text-to-Speech API, but there are many others available
-            tts = gTTS(text=compliment, lang='pl')
+            # Use a text-to-speech service to generate an audio clip of the message being spoken
+            # This is an example using gTTS, a free and open source text-to-speech library
+            tts = gTTS(compliment, lang="pl")
             audio_bytes = BytesIO()
             tts.write_to_fp(audio_bytes)
             audio_bytes.seek(0)

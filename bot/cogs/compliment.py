@@ -4,11 +4,15 @@ from discord.ext import commands
 from discord import app_commands
 from config import Config
 import random
-from gtts import gTTS
+from google.cloud import texttospeech
+import io
 import tempfile
 import os
 
 openai.api_key = Config.OPENAI_TOKEN
+
+# Initialize the Google Text-to-Speech client
+tts_client = texttospeech.TextToSpeechClient()
 
 class Compliment(commands.Cog):
     def __init__(self, bot):
@@ -50,10 +54,16 @@ class Compliment(commands.Cog):
 
             compliment = response.choices[0].text.strip()
 
-            # Use the gTTS library to generate an audio clip of the message being spoken
-            tts = gTTS(text=compliment, lang="pl")
+            # Use the Google Text-to-Speech library to generate an audio clip of the message being spoken
+            synthesis_input = texttospeech.SynthesisInput(text=compliment)
+            voice = texttospeech.VoiceSelectionParams(language_code="pl-PL", ssml_gender=texttospeech.SsmlVoiceGender.FEMALE)
+            audio_config = texttospeech.AudioConfig(audio_encoding=texttospeech.AudioEncoding.MP3)
+
+            response = tts_client.synthesize_speech(input=synthesis_input, voice=voice, audio_config=audio_config)
+
+            # Save the audio to a temporary file
             with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as audio_file:
-                tts.save(audio_file.name)
+                audio_file.write(response.audio_content)
                 audio_file.flush()
 
                 # Send the audio clip to the selected member in the voice channel
@@ -72,3 +82,4 @@ class Compliment(commands.Cog):
         except Exception as e:
             print(f"An error occurred while processing the command: {str(e)}")
             raise e
+

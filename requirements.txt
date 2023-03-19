@@ -1,6 +1,4 @@
 discord.py>=2.0.0
 Pillow>=8.3.2
 openai
-gtts
-pynacl
-pyttsx3
+google-cloud-texttospeech

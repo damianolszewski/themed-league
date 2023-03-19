@@ -18,6 +18,14 @@ openai.api_key = Config.OPENAI_TOKEN
 credentials = service_account.Credentials.from_service_account_file("google.json")
 tts_client = texttospeech.TextToSpeechClient(credentials=credentials)
 
+polish_wavenet_voices = [
+    "pl-PL-Wavenet-A",
+    "pl-PL-Wavenet-B",
+    "pl-PL-Wavenet-C",
+    "pl-PL-Wavenet-D",
+    "pl-PL-Wavenet-E",
+]
+
 class Compliment(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -46,7 +54,7 @@ class Compliment(commands.Cog):
             selected_member = random.choice(members)
 
             # Use OpenAI's GPT-3 API to generate a positive message to send to the selected member
-            prompt = f"Powiedz komplement o {selected_member.display_name} w języku polskim. Pamiętaj żeby w zdaniu użyć imienia osoby do której się zwracasz (czyli {selected_member.display_name}). Postaraj się żeby komplement był kreatywny."
+            prompt = f"Powiedz komplement o {selected_member.display_name} w języku polskim. Pamiętaj żeby w zdaniu użyć imienia osoby do której się zwracasz (czyli {selected_member.display_name}). Postaraj się żeby komplement był kreatywny. Czasami komplement może być dłuższy (nie zawsze musi być). Postaraj się zapmiętać ten komplement aby w późniejszy komplementach móc odnieść się do poprzednich. Czasami możesz odnosić się do poprzednich komplementów tworząc nowe komplementy."
             response = openai.Completion.create(
                 engine="text-davinci-002",
                 prompt=prompt,
@@ -58,6 +66,8 @@ class Compliment(commands.Cog):
 
             compliment = response.choices[0].text.strip()
 
+            selected_voice = random.choice(polish_wavenet_voices)
+
             try:
                 print("Using google tts")
                 # Use the Google Text-to-Speech library to generate an audio clip of the message being spoken
@@ -65,7 +75,7 @@ class Compliment(commands.Cog):
                 voice = texttospeech.VoiceSelectionParams(
                     language_code="pl-PL", 
                     ssml_gender=texttospeech.SsmlVoiceGender.FEMALE,
-                    name="pl-PL-Wavenet-B"
+                    name=selected_voice
                 )
                 audio_config = texttospeech.AudioConfig(audio_encoding=texttospeech.AudioEncoding.MP3)
 

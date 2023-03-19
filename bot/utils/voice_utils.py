@@ -12,8 +12,6 @@ from discord.opus import Encoder
 import openai
 from enum import Enum
 
-# ...
-
 class InteractionType(Enum):
     COMPLIMENT = 1
     JOKE = 2
@@ -67,12 +65,17 @@ async def voiceInteraction(interaction_type: InteractionType, interaction: disco
             prompt = joke
         else:
             raise ValueError("Invalid interaction type")
+        
+        message = f"{prompt}<-|endoftext|->"
 
         # Use OpenAI's GPT-3 API to generate a positive message to send to the selected member
         
-        response = openai.Completion.create(
-            engine="gpt-3.5-turbo",
-            prompt=prompt,
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": message},
+            ],
             max_tokens=150,
             n=1,
             stop=None,
@@ -81,7 +84,7 @@ async def voiceInteraction(interaction_type: InteractionType, interaction: disco
 
         print(f"Response: {response}")
 
-        compliment = response.choices[0].text.strip()
+        compliment = response.choices[0].message['content'].strip()
 
         selected_voice = random.choice(polish_wavenet_voices)
 

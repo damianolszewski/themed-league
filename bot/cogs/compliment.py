@@ -6,6 +6,7 @@ from config import Config
 import random
 from gtts import gTTS
 import tempfile
+import os
 
 openai.api_key = Config.OPENAI_TOKEN
 

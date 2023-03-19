@@ -14,6 +14,7 @@ from io import BytesIO
 from dotenv import load_dotenv
 
 load_dotenv()
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "google.json"
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='!', intents=intents)
 

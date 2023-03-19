@@ -79,6 +79,8 @@ async def voiceInteraction(interaction_type: InteractionType, interaction: disco
             temperature=0.5,
         )
 
+        print(f"Response: {response}")
+
         compliment = response.choices[0].text.strip()
 
         selected_voice = random.choice(polish_wavenet_voices)

@@ -2,7 +2,7 @@ import openai
 import discord
 from discord.ext import commands
 from discord import app_commands
-from voice_utils import InteractionType, voiceInteraction
+from bot.utils.voice_utils import InteractionType, voiceInteraction
 
 class VoiceInteraction(commands.Cog):
     def __init__(self, bot):

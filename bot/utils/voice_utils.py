@@ -22,11 +22,8 @@ credentials = service_account.Credentials.from_service_account_file("google.json
 tts_client = texttospeech.TextToSpeechClient(credentials=credentials)
 
 polish_wavenet_voices = [
-    "pl-PL-Wavenet-A",
     "pl-PL-Wavenet-B",
-    "pl-PL-Wavenet-C",
     "pl-PL-Wavenet-D",
-    "pl-PL-Wavenet-E",
 ]
 
 def get_voice_channel_members(interaction: discord.Interaction) -> list[discord.Member]:

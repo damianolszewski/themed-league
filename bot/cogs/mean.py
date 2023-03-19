@@ -4,8 +4,8 @@ from discord.ext import commands
 from discord import app_commands
 from config import Config
 import random
-from io import BytesIO
 from gtts import gTTS
+import io
 
 openai.api_key = Config.OPENAI_TOKEN
 
@@ -50,16 +50,20 @@ class Mean(commands.Cog):
             compliment = response.choices[0].text.strip()
 
             # Use the gTTS library to generate an audio clip of the message being spoken
-            # This library supports multiple languages, including Polish
-            tts = gTTS(compliment, lang="pl")
-            audio_bytes = BytesIO()
+            # This library supports many languages including Polish.
+            # Note: You may need to install mpg123 to play the audio file.
+            tts = gTTS(text=compliment, lang="pl")
+            audio_bytes = io.BytesIO()
             tts.write_to_fp(audio_bytes)
             audio_bytes.seek(0)
 
             # Send the audio clip to the selected member in the voice channel
             voice_client = await channel.connect()
-            audio_source = discord.FFmpegPCMAudio(stream.getvalue())
+            audio_source = discord.FFmpegPCMAudio(audio_bytes)
             voice_client.play(audio_source)
+            while voice_client.is_playing():
+                pass
+            await voice_client.disconnect()
             await interaction.followup.send(f"Sent a positive message to {selected_member.display_name}!")
             
         except Exception as e:

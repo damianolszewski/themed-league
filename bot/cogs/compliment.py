@@ -86,7 +86,7 @@ class Compliment(commands.Cog):
 
             # Send the audio clip to the selected member in the voice channel
             voice_client = await channel.connect()
-            audio_source = discord.FFmpegOpusAudio(audio_file.name, options="-b:a 64k", bitrate=Encoder.BITRATE_MAX)
+            audio_source = discord.FFmpegOpusAudio(audio_file.name, options="-b:a 64k", bitrate=64)
             voice_client.play(audio_source)
             while voice_client.is_playing():
                 pass

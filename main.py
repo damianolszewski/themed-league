@@ -12,7 +12,6 @@ import json
 from PIL import Image
 from io import BytesIO
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "google.json"
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='!', intents=intents)
 

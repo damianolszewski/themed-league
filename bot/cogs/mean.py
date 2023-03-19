@@ -4,7 +4,7 @@ from discord.ext import commands
 from discord import app_commands
 from config import Config
 import random
-from google.cloud import texttospeech
+from gtts import gTTS
 from io import BytesIO
 
 openai.api_key = Config.OPENAI_TOKEN
@@ -49,31 +49,19 @@ class Mean(commands.Cog):
 
             compliment = response.choices[0].text.strip()
 
-            # Use a text-to-speech service to generate an audio clip of the message being spoken
+            # Use gTTS library to generate an audio clip of the message being spoken
             # This is an example using Google's Text-to-Speech API, but there are many others available
-
-            client = texttospeech.TextToSpeechClient()
-            synthesis_input = texttospeech.SynthesisInput(text=compliment)
-            voice = texttospeech.VoiceSelectionParams(
-                language_code="pl-PL",
-                ssml_gender=texttospeech.SsmlVoiceGender.NEUTRAL
-            )
-            audio_config = texttospeech.AudioConfig(
-                audio_encoding=texttospeech.AudioEncoding.MP3
-            )
-
-            response = client.synthesize_speech(
-                input=synthesis_input, voice=voice, audio_config=audio_config
-            )
-
-            audio_bytes = response.audio_content
+            tts = gTTS(text=compliment, lang='pl')
+            audio_bytes = BytesIO()
+            tts.write_to_fp(audio_bytes)
+            audio_bytes.seek(0)
 
             # Send the audio clip to the selected member in the voice channel
             voice_client = await channel.connect()
-            audio_source = discord.FFmpegPCMAudio(BytesIO(audio_bytes))
+            audio_source = discord.FFmpegPCMAudio(audio_bytes)
             voice_client.play(audio_source)
             await interaction.followup.send(f"Sent a positive message to {selected_member.display_name}!")
-            
+
         except Exception as e:
             print(f"An error occurred while processing the command: {str(e)}")
             raise e

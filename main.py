@@ -21,7 +21,6 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 #More info on tree can be found on discord.py Git Repo
 @bot.command()
 @commands.guild_only()
-@commands.is_owner()
 async def sync(ctx: Context,
                guilds: Greedy[discord.Object],
                spec: Optional[Literal["~", "*", "^"]] = None) -> None:

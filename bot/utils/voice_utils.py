@@ -59,7 +59,7 @@ async def voiceInteraction(interaction_type: InteractionType, interaction: disco
         selected_member = random.choice(members)
 
         compliment = f"Powiedz komplement o {selected_member.display_name} w języku polskim. Pamiętaj żeby w zdaniu użyć imienia osoby do której się zwracasz (czyli {selected_member.display_name}). Postaraj się żeby komplement był kreatywny. Czasami komplement może być dłuższy (nie zawsze musi być). Postaraj się zapmiętać ten komplement aby w późniejszy komplementach móc odnieść się do poprzednich. Czasami możesz odnosić się do poprzednich komplementów tworząc nowe komplementy."
-        joke = f"Powiedz żart o {selected_member.display_name} w języku polskim. Przykładowe żarty: 'Przynosisz wszystkim tyle radości, kiedy wychodzisz z pokoju' 'Jesteś ludzkim odpowiednikiem nagrody za uczestnictwo', ' Każdy ma w życiu jakiś cel, twoim jest zostać dawcą organów', 'Od chwili, gdy zobaczyłem cię po raz pierwszy, wiedziałem, że chcę spędzić resztę życia unikając cię, 'Jesteś bardziej rozczarowujący niż niesolony precel', 'Możesz przywitać się z moim środkowym palcem' , Pamiętaj żeby w zdaniu użyć imienia osoby do której się zwracasz (czyli {selected_member.display_name}). Postaraj się żeby żart był kreatywny. Czasami żart może być dłuższy (nie zawsze musi być). Postaraj się zapmiętać ten żart aby w późniejszy żart móc odnieść się do poprzednich. Czasami możesz odnosić się do poprzednich żartów tworząc nowe żarty."
+        joke = f"Powiedz żart o {selected_member.display_name} w języku polskim. Przykładowe żarty: 'Przynosisz wszystkim tyle radości, kiedy wychodzisz z pokoju' 'Jesteś ludzkim odpowiednikiem nagrody za uczestnictwo', ' Każdy ma w życiu jakiś cel, twoim jest zostać dawcą organów', 'Od chwili, gdy zobaczyłem cię po raz pierwszy, wiedziałem, że chcę spędzić resztę życia unikając cię, 'Jesteś bardziej rozczarowujący niż niesolony precel', 'Możesz przywitać się z moim środkowym palcem', Pamiętaj żeby nie używać tylko przykładowych żartów (postaraj się częściej tworzyć swoje) , Pamiętaj żeby w zdaniu użyć imienia osoby do której się zwracasz (czyli {selected_member.display_name}). Postaraj się żeby żart był kreatywny. Czasami żart może być dłuższy (nie zawsze musi być). Postaraj się zapmiętać ten żart aby w późniejszy żart móc odnieść się do poprzednich. Czasami możesz odnosić się do poprzednich żartów tworząc nowe żarty."
 
         if interaction_type == InteractionType.COMPLIMENT:
             prompt = compliment
@@ -122,7 +122,7 @@ async def voiceInteraction(interaction_type: InteractionType, interaction: disco
         # Remove the temporary audio file
         os.unlink(audio_file.name)
 
-        await interaction.followup.send(f"Komplement wysłany do {selected_member.display_name}!")
+        await interaction.followup.send(f"Mam coś do powiedzenia o {selected_member.display_name}!")
     except Exception as e:
         print(f"An error occurred while processing the command: {str(e)}")
         raise e

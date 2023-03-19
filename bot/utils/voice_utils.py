@@ -80,6 +80,7 @@ async def voiceInteraction(interaction_type: InteractionType, interaction: disco
             n=1,
             stop=None,
             temperature=0.5,
+            timeout=10,  # Set a timeout of 10 seconds for the request
         )
 
         print(f"Response: {response}")

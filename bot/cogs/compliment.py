@@ -39,7 +39,7 @@ class Compliment(commands.Cog):
             selected_member = random.choice(members)
 
             # Use OpenAI's GPT-3 API to generate a positive message to send to the selected member
-            prompt = f"Compliment {selected_member.display_name} in Polish"
+            prompt = f"Powiedz komplement o {selected_member.display_name} w języku polskim. Pamiętaj żeby w zdaniu użyć imienia osoby do której się zwracasz (czyli {selected_member.display_name})"
             response = openai.Completion.create(
                 engine="text-davinci-002",
                 prompt=prompt,

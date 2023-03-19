@@ -45,7 +45,7 @@ class Compliment(commands.Cog):
             selected_member = random.choice(members)
 
             # Use OpenAI's GPT-3 API to generate a positive message to send to the selected member
-            prompt = f"Powiedz komplement o {selected_member.display_name} w języku polskim. Pamiętaj żeby w zdaniu użyć imienia osoby do której się zwracasz (czyli {selected_member.display_name})"
+            prompt = f"Powiedz komplement o {selected_member.display_name} w języku polskim. Pamiętaj żeby w zdaniu użyć imienia osoby do której się zwracasz (czyli {selected_member.display_name}). Postaraj się żeby komplement był kreatywny."
             response = openai.Completion.create(
                 engine="text-davinci-002",
                 prompt=prompt,
@@ -58,6 +58,7 @@ class Compliment(commands.Cog):
             compliment = response.choices[0].text.strip()
 
             try:
+                print("Using google tts")
                 # Use the Google Text-to-Speech library to generate an audio clip of the message being spoken
                 synthesis_input = texttospeech.SynthesisInput(text=compliment)
                 voice = texttospeech.VoiceSelectionParams(language_code="pl-PL", ssml_gender=texttospeech.SsmlVoiceGender.FEMALE)

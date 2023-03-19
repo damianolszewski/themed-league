@@ -20,7 +20,6 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 # Must have devloper mode on discord on setting>Advance>Developer Mode
 #More info on tree can be found on discord.py Git Repo
 @bot.command()
-@commands.guild_only()
 async def sync(ctx: Context,
                guilds: Greedy[discord.Object],
                spec: Optional[Literal["~", "*", "^"]] = None) -> None:

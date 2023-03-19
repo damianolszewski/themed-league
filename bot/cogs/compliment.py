@@ -1,23 +1,25 @@
 import openai
 import discord
 from discord.ext import commands
-from discord import app_commands
+from discord.app import commands as app_commands
 from config import Config
 import random
 from gtts import gTTS
 import io
+import tempfile
+import os
 
 openai.api_key = Config.OPENAI_TOKEN
 
-class Mean(commands.Cog):
+class Compliment(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
     @app_commands.command(
-        name="mean",
-        description="Sends a mean message to a random member of your voice channel."
+        name="compliment",
+        description="Sends a positive message to a random member of your voice channel."
     )
-    async def mean(self, interaction: discord.Interaction):
+    async def compliment(self, interaction: discord.Interaction):
         try:
             await interaction.response.defer()
 
@@ -50,22 +52,24 @@ class Mean(commands.Cog):
             compliment = response.choices[0].text.strip()
 
             # Use the gTTS library to generate an audio clip of the message being spoken
-            # This library supports many languages including Polish.
-            # Note: You may need to install mpg123 to play the audio file.
             tts = gTTS(text=compliment, lang="pl")
-            audio_bytes = io.BytesIO()
-            tts.write_to_fp(audio_bytes)
-            audio_bytes.seek(0)
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as audio_file:
+                tts.save(audio_file.name)
+                audio_file.flush()
 
-            # Send the audio clip to the selected member in the voice channel
-            voice_client = await channel.connect()
-            audio_source = discord.FFmpegPCMAudio(audio_bytes)
-            voice_client.play(audio_source)
-            while voice_client.is_playing():
-                pass
-            await voice_client.disconnect()
+                # Send the audio clip to the selected member in the voice channel
+                voice_client = await channel.connect()
+                audio_source = discord.FFmpegPCMAudio(audio_file.name)
+                voice_client.play(audio_source)
+                while voice_client.is_playing():
+                    pass
+                await voice_client.disconnect()
+
+            # Remove the temporary audio file
+            os.unlink(audio_file.name)
+
             await interaction.followup.send(f"Sent a positive message to {selected_member.display_name}!")
-            
+
         except Exception as e:
             print(f"An error occurred while processing the command: {str(e)}")
             raise e

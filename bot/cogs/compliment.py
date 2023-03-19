@@ -5,8 +5,7 @@ from discord import app_commands
 from config import Config
 import random
 from gtts import gTTS
-import io
-import os
+import tempfile
 
 openai.api_key = Config.OPENAI_TOKEN
 
@@ -52,17 +51,20 @@ class Compliment(commands.Cog):
 
             # Use the gTTS library to generate an audio clip of the message being spoken
             tts = gTTS(text=compliment, lang="pl")
-            with io.BytesIO() as audio_file:
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as audio_file:
                 tts.save(audio_file.name)
                 audio_file.flush()
 
                 # Send the audio clip to the selected member in the voice channel
                 voice_client = await channel.connect()
-                audio_source = discord.FFmpegPCMAudio(audio_file)
+                audio_source = discord.FFmpegPCMAudio(audio_file.name)
                 voice_client.play(audio_source)
                 while voice_client.is_playing():
                     pass
                 await voice_client.disconnect()
+
+            # Remove the temporary audio file
+            os.unlink(audio_file.name)
 
             await interaction.followup.send(f"Komplement wysłany do {selected_member.display_name}!")
 

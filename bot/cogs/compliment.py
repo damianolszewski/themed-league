@@ -8,11 +8,15 @@ from google.cloud import texttospeech
 import io
 import tempfile
 import os
+from google.oauth2 import service_account
 
 openai.api_key = Config.OPENAI_TOKEN
 
 # Initialize the Google Text-to-Speech client
-tts_client = texttospeech.TextToSpeechClient()
+from google.oauth2 import service_account
+
+credentials = service_account.Credentials.from_service_account_file("google.json")
+tts_client = texttospeech.TextToSpeechClient(credentials=credentials)
 
 class Compliment(commands.Cog):
     def __init__(self, bot):

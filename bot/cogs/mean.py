@@ -50,18 +50,19 @@ class Mean(commands.Cog):
             compliment = response.choices[0].text.strip()
 
             # Use a text-to-speech service to generate an audio clip of the message being spoken
-            # This is an example using gTTS, a free and open source text-to-speech library
-            tts = gTTS(compliment, lang="pl")
-            audio_bytes = BytesIO()
-            tts.write_to_fp(audio_bytes)
-            audio_bytes.seek(0)
+            # This is an example using Google's Text-to-Speech API, but there are many others available
+
+            tts = gTTS(compliment, lang='pl')
+            fp = BytesIO()
+            tts.write_to_fp(fp)
+            fp.seek(0)
 
             # Send the audio clip to the selected member in the voice channel
             voice_client = await channel.connect()
-            audio_source = discord.FFmpegPCMAudio(audio_bytes)
+            audio_source = discord.FFmpegPCMAudio(fp)
             voice_client.play(audio_source)
             await interaction.followup.send(f"Sent a positive message to {selected_member.display_name}!")
-
+            
         except Exception as e:
             print(f"An error occurred while processing the command: {str(e)}")
             raise e

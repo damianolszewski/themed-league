@@ -58,7 +58,7 @@ class Mean(commands.Cog):
 
             # Send the audio clip to the selected member in the voice channel
             voice_client = await channel.connect()
-            audio_source = discord.FFmpegPCMAudio(audio_bytes)
+            audio_source = discord.FFmpegPCMAudio(stream.getvalue())
             voice_client.play(audio_source)
             await interaction.followup.send(f"Sent a positive message to {selected_member.display_name}!")
             
